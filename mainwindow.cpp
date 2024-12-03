@@ -8,7 +8,6 @@
 namespace fs = std::filesystem;
 
 
-
 void processPath(fs::path p, advancedIndexer* indexer) {
     if (fs::is_directory(p)) {
         for (const fs::directory_entry& x : fs::directory_iterator{p}) {
@@ -38,12 +37,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listView->setModel(file_model);
 
 
-    indexer->load("indexed.bin");
+    indexer->load("indexer.bin");
     processPath(dir,indexer);
-
-    // indexer->save("indexed.bin");
-
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -59,10 +56,12 @@ void MainWindow::on_treeView_clicked(const QModelIndex &index)
     for (const fs::path &p : fs::directory_iterator{clicked_path}){
         std::string extension = p.extension();
         if ((extension == ".png") || (extension == ".jpg")){
-            QStandardItem *item = new QStandardItem("image");
+
+            QStandardItem *item = new QStandardItem(QString::fromStdString(p.filename()));
             item->setData(QString::fromStdString(p));
             item->setEditable(false);
             file_model->appendRow(item);
+
         }
     }
 
@@ -100,7 +99,7 @@ void MainWindow::on_lineEditUserInput_returnPressed()
             }
 
             if (added_items.find(match.first) == added_items.end()) {
-                QStandardItem *item = new QStandardItem("image");
+                QStandardItem *item = new QStandardItem(QString::fromStdString(match.first.filename()));
                 item->setData(QString::fromStdString(match.first));
                 item->setEditable(false);
                 file_model->appendRow(item);
@@ -111,6 +110,7 @@ void MainWindow::on_lineEditUserInput_returnPressed()
         if (too_large) {
             break;
         }
+
         closest_n *= 2;
     }
 }

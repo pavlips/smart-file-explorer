@@ -48,7 +48,6 @@ else()
 endif()
 
 
-link_directories(/opt/homebrew/opt/openssl@3/lib)
 target_link_libraries(FileExplorer PRIVATE Qt${QT_VERSION_MAJOR}::Widgets OpenSSL::SSL OpenSSL::Crypto)
 
 if(${QT_VERSION} VERSION_LESS 6.1.0)

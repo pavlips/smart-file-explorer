@@ -61,7 +61,6 @@ void advancedIndexer::load(fs::path load_path) {
     std::ifstream load_stream(load_path.string() + "_labels.txt");
     std::string line;
 
-
     while (std::getline(load_stream, line)) {
         size_t comma_pos = line.find(',');
         hnswlib::labeltype label = std::stoull(line.substr(0, comma_pos));
